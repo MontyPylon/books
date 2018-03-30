@@ -17,10 +17,17 @@
 \usepackage[makeroom]{cancel}
 \usepackage{braket}
 \usepackage{amsthm}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
 \newtheorem{theorem}{Theorem}[section]
 \numberwithin{theorem}{subsection}
 \numberwithin{theorem}{subsubsection}
+
+\newtheorem{lemma}{Lemma}[section]
+\numberwithin{lemma}{subsection}
+\numberwithin{lemma}{subsubsection}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
@@ -40,8 +47,10 @@
 
 \section{Introduction}
 This book is intended to store all the useful and beautiful mathematical tools learned throughout my education which I needlessly forget from time to time.
-
+\section{General Math}
+\subsection{Long Division}
 \section{Calculus}
+\subsection{Integration Table}
 
 \subsection{Epsilon Delta Proof of Limit} 
 The proof that a function has a limit using the epsilon delta proof:
@@ -147,6 +156,10 @@ The differential $dF$ is exact if for any pair of variables the following proper
     \left [ \frac{\partial}{\partial x_{i}}\left ( \frac{\partial F}{\partial x_{j}} \right )_{\{x_{k \neq j}\}}\right ]_{\{x_{k \neq i}\}} = \left [ \frac{\partial}{\partial x_{j}}\left ( \frac{\partial F}{\partial x_{i}} \right )_{\{x_{k \neq i}\}}\right ]_{\{x_{k \neq j}\}}
 \end{gather*}
 
+\begin{gather}
+    \left(\frac{\partial x}{\partial y}\right)_{z}\left(\frac{\partial y}{\partial z}\right)_{x}\left(\frac{\partial z}{\partial x}\right)_{y} = -1
+\end{gather}
+
 \begin{comment}
 ======================================================================================================================================================================================================================================================================================DIFFERENTIAL EQUATIONS=================================================== ====================================================================================================================================================================================================================================
 \end{comment}
@@ -161,7 +174,14 @@ TODO
 \end{comment}
 
 \section{Linear Algebra}
- TODO
+\subsection{Linear Form}
+A linear functional or linear form is a linear map from a vector space to a field of scalars. In general, if $V$ is a vector space over a field $k$, then a linear functional $f$ is a function from $V$ to $k$ that is linear:
+\begin{gather}
+    f(\vec{v}+\vec{w}) = f(\vec{v})+f(\vec{w})\quad \forall \vec{v}, \vec{w}\in V\\
+    f(a\vec{v}) = af(\vec{v})\quad \forall \vec{v}\in V, a\in k.
+\end{gather}
+The set of all linear functionals from $V$ to $k$, Hom$_{k}(V,k)$, forms a vector space over k with the addition of the operations of addition and scalar multiplication (defined pointwise).  This space is called the dual space of V, or sometimes the algebraic dual space, to distinguish it from the continuous dual space.
+
 
 \begin{comment}
 ======================================================================================================================================================================================================================================================================================VECTOR CALCULUS=================================================== ====================================================================================================================================================================================================================================
@@ -386,6 +406,7 @@ $\mathcal{P}(S)$ is the set of all subsets of S. For example, the powerset of th
 \end{equation*}
 \noindent Then if $R \in R$ this yeilds a contradiction, because any element of R cannot contain itself. But if $R \notin R$, this also yields a contradiction because if $R$ doesn't contain itself, it should be an element of $R$ by the definition of $R$.
 
+\newpage
 \begin{comment}
 ======================================================================================================================================================================================================================================================================================REAL ANALYSIS================================================ ====================================================================================================================================================================================================================================
 \end{comment}
@@ -567,6 +588,12 @@ We call $(X,\rho)$ a metric space. The value $\rho(x,y)$ is called the distance 
     c_{1}\rho(x,y) \leq \sigma(x,y) \leq c_{2}\rho(x,y),\ \forall x,y\in X.
 \end{gather*}
 
+\subsubsection{Triangle Inequality}
+\begin{gather}
+    \lvert x + y \rvert \leq \lvert x \rvert + \lvert y \rvert\\
+    |x-y| \geq \big\lvert |x| - |y| \big\rvert
+\end{gather}
+
 \subsection{Open and Closed Sets}
 
 \noindent \textbf{Open and Closed Balls} \\
@@ -611,7 +638,10 @@ A point $x \in X$ is called a point of closure of $S$ if $\forall \epsilon > 0,\
     Let $(X,\rho)$ be a metric space and $S \subseteq X$ a subset. Then $S$ is closed if and only if $S' \subseteq S$.
 \end{theorem}
 
-\subsection{Sequences} 
+\subsection{Sequences}
+\begin{definition}[Sequence]
+    Formally, a sequence can be defined as a function whose domain is either the set of the natural numbers (for infinite sequences) or the set of the first $N$ natural numbers (for a sequence of finite length $N$).
+\end{definition}
 \noindent \textbf{Convergence}\\
 \indent Let $(X,\rho)$ be a metric space and $\{x_{n}\}$ a sequence in $X$. We say that $\{x_{n}\}$ converges (in metric $\rho$) to $x \in X$ if 
 
@@ -652,10 +682,18 @@ When the limit of every convergent sequence in $S$ belongs to $S$ it is often sa
 \subsubsection{Cauchy Sequence} 
 
 \begin{definition}[Cauchy Sequence]
-    A sequence $\{x_{n}\}$ in a metric space $(X,\rho)$ is said to be a \textit{Cauchy sequence} if $\forall \epsilon > 0,\ \exists N \in \mathbb{N}$ s.t. $\rho(x_{n},x_{m}) < \epsilon$ for any pair $(n,m)$ if $n \geq N$ and $m \geq N$.
+    A sequence $\{x_{n}\}$ in a metric space $(X,\rho)$ is said to be a \textit{Cauchy sequence} if $\forall \epsilon > 0,\ \exists N \in \mathbb{N}$ s.t. $\rho(x_{n},x_{m}) < \epsilon$ for any pair $(n,m)$ s.t. $n \geq N$ and $m \geq N$.
 \end{definition}
 
-\begin{definition}[Complete]
+\begin{theorem}[Convergence Implies Cauchyness]
+    Let $(X,\rho)$ be a metric space and $\{x_{n}\}$ be a sequence in $X$. If $x_{n} \rightarrow x \in X$, then $\{x_{n}\}$ is a Cauchy sequence.
+\end{theorem}
+
+\begin{proof}
+    Using the triangle inequality, we see that $\rho(x_{n},x_{m}) \leq \rho(x_{n},x) + \rho(x,x_{m})$ and the fact that $\rho(x_{n},x) \rightarrow 0$ and $\rho(x,x_{m}) \rightarrow 0$, shows that $\rho(x_{n},x_{m}) \rightarrow 0$.
+\end{proof}
+
+\begin{definition}[Completeness]
     A metric space in which every Cauchy sequence converges is said to be \textit{complete}.
 \end{definition}
 
@@ -667,7 +705,178 @@ When the limit of every convergent sequence in $S$ belongs to $S$ it is often sa
     \end{itemize}
 \end{definition}
 
+\begin{theorem}
+    If $\rho$ and $\sigma$ are uniformly equivalent metrics on $X$, then $(X,\rho)$ is complete iff $(X,\sigma)$ is complete.
+\end{theorem}
 
+\begin{theorem}[Closed Subspaces Are Complete]
+    Let $(X,\rho)$ be a complete metric space and $\Tilde{X}$ a subspace. Then $(\Tilde{X},\rho)$ is complete iff $\Tilde{X}$ is closed.
+\end{theorem}
+\begin{theorem}[Completeness of Product Spaces]
+    Let $(X,\rho_{X})$ and $(Y,\rho_{Y})$ be two complete metric spaces. Define the metric $p: X \times Y \rightarrow [0,\rho)$ as
+    \begin{gather*}
+        \rho(x,y) = \rho_{X}(x^x,y^x) + \rho_{Y}(x^y,y^y).
+    \end{gather*}
+    Then $(X\times Y,\rho)$ is a complete metric space.
+\end{theorem}
+
+\subsection{Compactness}
+There are three different but equivalent ways to study compactness. We will start with the one that is built on the concept of convergence.
+
+\subsubsection{Sequential Compactness}
+\begin{definition}(Subsequence)
+    Let $(X,\rho)$ be a metric space and $\{x_{n}\}$ a sequence in $X$. Let $n: \mathbb{N} \rightarrow\mathbb{N}$ be an integer function that is strictly increasing (monotonically increasing, i.e. $n(k+1) > n(k),\ \forall k$). We then call $\{x_{n(k)}\}_{k=1}^{\infty}$ (or more simply $\{x_{n_{k}}\}$) a subsequence of $\{x_{n}\}$.
+\end{definition}
+\subsection{Continuity}
+There are four forms of continuity that a function can take. It can be continuous at a point in its domain, continuous on all its domain, uniformly continuous on all its domain, and Lipschitz continuous on all its domain.
+\begin{definition}[Continuity]\ \\
+    (i) We say that $f$ is continuous at $x_{0} \in X$ if $\forall \epsilon > 0,\ \exists \delta(\epsilon,x_{0}) > 0$ such that
+    \begin{gather}
+        \rho_{X}(x,x_{0}) \leq \delta \implies \rho_{Y}(f(x),f(x_{0}) \leq \epsilon \quad \forall x \in Dom(f).
+    \end{gather}
+    If $f$ is continuous at any point $x_{0} \in X$, we say $f$ is continuous.
+    (ii) We say that $f$ is uniformly continuous in $X$ if $\forall \epsilon > 0,\ \exists \delta(\epsilon)$ such that
+    \begin{gather}
+        \rho_{X}(x,x_{0}) \leq \delta \implies \rho_{Y}(f(x),f(x_{0})) \leq \epsilon, \quad \forall x,y\in Dom(f).
+    \end{gather}
+    (iii) We say that $f$ is Lipschitz continuous in $X$ if $\exists M \in \mathbb{R}$ such that
+    \begin{gather}
+        \rho_{Y}(f(x),f(y)) \leq M\rho_{X}(x,y), \quad \forall x,y \in Dom(f).
+    \end{gather}
+    
+    The difference between being uniformly continuous, and being simply continuous at every point, is that in uniform continuity the value of $\delta$ depends only on $\epsilon$ and not on the point in the domain.
+\end{definition}
+
+\begin{theorem}[Strength of Continuities]
+    Let $f:X\rightarrow Y$ be a function. Then
+    \begin{itemize}
+        \item[(i)] If $f$ is Lipschitz continuous on $Dom(f)$, then $f$ is uniformly continuous on $Dom(f)$.
+        \item[(ii)] If $f$ is uniformly continuous on $Dom(f)$, then $f$ is continuous on $Dom(f)$.
+    \end{itemize}
+\end{theorem}
+
+\subsection{Integral Calculus}
+\begin{definition}[Partition on an Interval]
+    A partition $P$ of the interval $[a,b]$ is a collection of $N+1\ (N \in \mathbb{N}$ points $\{x_{i}\}_{i=1}^N$ that satisfy:
+    \begin{gather}
+        a = x_{0} < x_{1} < ... < x_{N-1} < x_{N} = b.
+    \end{gather}
+    The interval $I_{i} = [x_{i-1},x_{i}],\ (1 \leq i \leq N)$ is called the $i^{\text{th}}$ subinterval in the partition $P$.
+\end{definition}
+
+\begin{theorem}
+    Let $f$ be bounded on $[a,b]$ and $P$ be a partition with $N$ subintervals. Define
+    \begin{gather}
+        M_{i} = \sup_{x}\{f(x)|x\in I_{i}\}, \quad \quad m_{i} = \inf_{x}\{f(x)|x\in I_{i}\}.
+    \end{gather}
+    Define
+    \begin{gather}
+        U_{P}(f) = \sum_{i=1}^{N}M_{i}(x_{i} - x_{i-1}), \quad \quad L_{P}(f) = \sum_{i=1}^{N}m_{i}(x_{i} - x{i-1}).
+    \end{gather}
+    Then
+    \begin{itemize}
+        \item[(i)] $L_{P}(f) \leq U_{P}(f),\ \forall P$.
+        \item[(ii)] Let $P$ and $Q$ be two partitions and $P \subseteq Q$. Then $L_{P}(f) \leq L_{Q}(f)$ and $U_{P}(f) \geq U_{Q}(f)$.
+        \item[(iii)] $L_{P}(f) \leq U_{Q}(f),\ \forall P,Q$.
+        \item[(iv)] $\sup_{P}\{L_{P}\} \leq \inf_{P}\{U_{P}(f)\}$.
+    \end{itemize}
+\end{theorem}
+
+\begin{theorem}[Reimann Integrable]
+    A bounded function $f$ on a finite interval $[a,b]$ is said to be Riemann integrable if
+    \begin{gather}
+        \sup_{P}\{L_{P}(f)\} = \inf_{P}\{U_{P}(f)\}.
+    \end{gather}
+    If $f$ is Riemann integrable, we define
+    \begin{gather}
+        \int_{a}^{b} f(x)dx \equiv \sup_{P}\{L_{P}(f)\} = \inf_{P}\{U_{P}(f)\}.
+    \end{gather}
+\end{theorem}
+
+\begin{definition}
+    If $f$ on a finite closed interval $[a,b]$ is Riemann integrable, then we define
+    \begin{gather}
+        \int_{b}^{a}f(x)dx = -\int_{a}^{b}f(x)dx.
+    \end{gather}
+\end{definition}
+
+\begin{theorem}[Riemann Integrability Test]
+    Let $f$ be bounded on the interval $[a,b]$. If $\forall \epsilon > 0,\ \exists P$ such that
+    \begin{gather}
+        U_{P}(f) - L_{P}(f) \leq \epsilon,
+    \end{gather}
+    then $f$ is Riemann integrable.
+\end{theorem}
+
+\begin{theorem}[Continuity on Finite Closed Interval Implies Riemann Integrability]
+    Let $f(x)$ be a continuous function on a finite interval $[a,b]$. Then $f$ is Riemann integrable.
+\end{theorem}
+\begin{proof}
+    Let $P$ be a partition with $N$ intervals. Then 
+    \begin{gather}
+        U_{P}(f) - L_{P}(f) = \sum_{i=1}^{N}(M_{i}-m_{i})(x_{i}-x_{i-1}).
+    \end{gather}
+    The interval is finite and closed, so by theorem TODO $f$ is uniformly continuous on $[a,b]$. This means $\forall \epsilon/(b-a)>0,\ \exists \delta$ s.t.
+    \begin{gather}
+        |x-y| \leq \delta \implies |f(x) - f(y)| \leq \frac{\epsilon}{b-a}.
+    \end{gather}
+    Now pick a partition $P$ such that $\sup_{i}|x_{i}-x_{i-1}| \leq \delta$. This implies that $(M_{i} - m_{i}) \leq \epsilon/(b-a)$. Then $\forall \epsilon>0,\ \exists P$ s.t.
+    \begin{gather}
+        U_{P}(f)-L_{P}(f) \leq \frac{\epsilon}{b-a}\sum_{i=1}^{N}(x_{i} - x_{i-1}) = \epsilon.
+    \end{gather}
+\end{proof}
+
+\begin{definition}[Riemann Sum]
+    Let $[a,b]$ be a finite closed interval and $f$ a bounded function on the interval. Let $P$ be a partition that has $N$ intervals. Define
+    \begin{gather}
+        S = \sum_{i=1}^{N}f(x_{i}^{*})(x_{i}-x_{i-1})
+    \end{gather}
+    with $x_{i}^{*}$ somewhere in $[x_{i-1},x_{i}]$. We call $S$ the Riemann sum for $f$ for partition $P$.
+\end{definition}
+
+\begin{theorem}[Rigorous Sequence of Partitions implies Riemann Integral, todo title]
+    Let $f$ be a continuous function on a finite interval $[a,b]$ and $\{P_{k}\}$ a sequence of partitions such that $\max_{i}|x_{i}-x_{i-1}| \rightarrow 0$ as $k \rightarrow \infty$. Let $S_{k}$ be any Riemann sum corresponding to $P_{k}$. Then
+    \begin{gather}
+        S_{k} \rightarrow \int_{a}^{b} f(x)dx \quad \text{as} \quad k \rightarrow \infty.
+    \end{gather}
+\end{theorem}
+\begin{proof}
+    $\forall \epsilon/|b-a| > 0,\ \exists \delta > 0$ such that $|x-y| \leq \delta \implies |f(x) - f(y)| \leq \epsilon/|b-a| \implies U_{P}(f) - L_{P}(f) \leq \epsilon$. Since $L_{P_{k}} \leq S_{k} \leq U_{P_{k}}$ and $L_{P_{k}} \leq \int_{a}^{b}f(x)dx \leq U_{P_{k}}$, we can combine these to get
+    \begin{gather}
+        |S_{k} - \int_{a}^{b}f(x)dx| \leq U_{P_{k}} - L_{P_{k}} \leq \epsilon,\ \forall k \geq K,
+    \end{gather}
+    with $K$ such that $\max_{i}|x_{i}-x_{i-1}| \leq \delta$. Thus,
+    \begin{gather}
+        S_{k} \rightarrow \int_{a}^{b}f(x)dx \quad \text{as} \quad k \rightarrow \infty.
+    \end{gather}
+\end{proof}
+
+\subsubsection{Properties of Riemann Integrals}
+Let $f$ and $g$ be continuous functions on the finite interval $[a,b]$. Then we have the following properties:
+\begin{itemize}
+    \item[(i)] Linearity
+        \begin{gather}
+            \int_{a}^{b} (\alpha f(x) + \beta g(x))dx = \alpha\int_{a}^{b}f(x)dx + \beta\int_{a}^{b}g(x)dx.
+        \end{gather}
+        \item[(ii)] Suppose $f(x) \leq g(x) \forall x\in [a,b]$. Then
+            \begin{gather}
+                \int_{a}^{b} f(x)dx \leq \int_{a}^{b}g(x)dx.
+            \end{gather}
+        \item[(iii)] Modulus of integral is less than the integral of the modulus.
+            \begin{gather}
+                \bigg\lvert \int_{a}^{b} f(x)dx \bigg\rvert \leq \int_{a}^{b}|f(x)|dx.
+            \end{gather}
+        \item[(iv)] Modulus of integral is less than supremum times interval length.
+            \begin{gather}
+                \bigg\lvert \int_{a}^{b}f(x)dx \leq (b-a) \sup_{x\in [a,b]}|f(x)|.
+            \end{gather}
+        \item[(v)] Integral can be split onto subintervals.
+            \begin{gather}
+                \int_{a}^{b}f(x)dx = \int_{a}^{c}f(x)dx + \int_{c}^{b}f(x)dx.
+            \end{gather}
+\end{itemize}
+
+\newpage
 \begin{comment}
 ======================================================================================================================================================================================================================================================================================COMPLEX ANALYSIS================================================ ====================================================================================================================================================================================================================================
 \end{comment}
@@ -680,6 +889,20 @@ When the limit of every convergent sequence in $S$ belongs to $S$ it is often sa
     i = \sqrt{-1} \quad \quad \quad z = x + iy \\
     \left | \frac{a}{b}\right | = \frac{|a|}{|b|} \quad \quad \quad |ab| = |a||b|
 \end{gather*}
+
+\noindent \textbf{Properties of Complex Conjugate} \\
+\begin{align*}
+             \overline{z + w} &= \overline{z} + \overline{w} \\
+             \overline{z - w} &= \overline{z} - \overline{w} \\
+                \overline{zw} &= \overline{z} \; \overline{w} \\
+               \overline{z/w} &= \overline{z}/\overline{w},\quad \text{if } w \ne 0 \\
+                 \overline{z} &= z ~\Leftrightarrow~ z \in \mathbb{R} \\
+               \overline{z^n} &= \left(\overline{z}\right)^n,\quad \forall n \in \mathbb{Z} \\
+  \left| \overline{z} \right| &= \left| z \right| \\
+         {\left| z \right|}^2 &= z\overline{z} = \overline{z}z \\
+      \overline{\overline{z}} &= z \\
+                       z^{-1} &= \frac{\overline{z}}{{\left| z \right|}^2},\quad \forall z \neq 0
+\end{align*}
 
 \subsection{Triangular Inequality}
 \begin{gather*}
@@ -695,17 +918,19 @@ If two different paths connect the same two points in the complex plane, and a f
 ======================================================================================================================================================================================================================================================================================PROBABILITY THEORY================================================ ====================================================================================================================================================================================================================================
 \end{comment}
 
+\newpage
+
 \section{Probability Theory}
 
 \subsection{Multiplication and Addition Principle}
 \noindent \textbf{Multiplication Principle} \\
-\indent If an event can be broken down into two stages where sub-event $A$ comes first and has $N(A)$ possibilities, and then sub-event $B$ occurs with $N(B)$ possibilities, then there are a total of $N(A) \cdot N(B)$ number of events that can occur. \\
+\indent If there are $a$ ways of doing something, and there are $b$ ways of doing another thing, then there are $a\cdot b$ ways of performing both actions. \\
 
 \noindent \textbf{Addition Principle} \\
-\indent If an event can be broken down into independent events that can be executed in any order, then we can add the total number of outcomes together. For example if event $A$ and event $B$ occur independently of each other, and there are $N(A)$ possible outcomes for event $A$, and $N(B)$ possible outcomes for event $B$, then there are a total of $N(A) + N(B)$ total number of outcomes.
+\indent If we have $a$ ways of doing something and $b$ ways of doing another thing and we can not do both at the same time, then there are $a + b$ ways to choose one of the actions.
 
 \subsection{Combinations vs Permutations}
-A combination is how many ways can you pick a number of objects from a group of objects, permutations are how many ways you can arrange a number of items.
+A combination is how many ways can you pick a number of objects from a group of objects, and permutations are how many ways you can arrange a number of items.
 
 \begin{table}[H]
     \centering
@@ -723,10 +948,12 @@ A combination is how many ways can you pick a number of objects from a group of 
     \label{tab:my_label}
 \end{table}
 
-\noindent For permutations with $n$ types of objects which $k_{1}$ objects of type $1$, $k_{2}$ objects of type $2$, etc. 
+\noindent For permutations with $n$ types of objects with $k_{1}$ objects of type $1$, $k_{2}$ objects of type $2$, etc, we have
 \begin{gather*}
     \frac{k!}{k_{1}!k_{2}!k_{3}!...k_{n}!}
 \end{gather*}
+
+\noindent permutations.
 
 \subsection{Binomial and Multinomial Theorem}
 
@@ -744,10 +971,24 @@ A combination is how many ways can you pick a number of objects from a group of 
 \end{gather*}
 
 \noindent \textbf{Pascal's Identity} \\
+Best thought of as the rows in Pascal's triangle, the Pascal identity says that
 \begin{gather*}
-    {n+1 \choose k} = {n \choose k-1} + {n\choose k}
+    {n+1 \choose k} = {n \choose k-1} + {n\choose k}.
 \end{gather*}
 
+\noindent \textbf{Multinomial Theorem} \\
+\indent For any positive integer $m$ and any non-negative integer $n$, the multinomial formula tells us how a sum with $m$ terms expands when raised to an arbitrary power $n$:
+\begin{gather*}
+    (x_1 + x_2  + \cdots + x_m)^n = \sum_{k_1+k_2+\cdots+k_m=n} {n \choose k_1, k_2, \ldots, k_m} \prod_{t=1}^m x_t^{k_t}\,,
+\end{gather*}
+
+\noindent where
+
+\begin{gather*}
+    {n \choose k_1, k_2, \ldots, k_m} = \frac{n!}{k_1!\, k_2! \cdots k_m!}
+\end{gather*}
+
+\noindent is a multinomial coefficient. For each term in the expansion, the exponents of $x_{i}$ must add up to $n$. 
 
 \subsection{General Rules}
 
@@ -762,17 +1003,15 @@ A combination is how many ways can you pick a number of objects from a group of 
 \noindent \textbf{Identities} \\
 \indent For two variables,
 
-\begin{enumerate}
-    \item $P(A \cap B) = P(A) + P(B) - P(A \cup B)$
-    \item $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
-\end{enumerate}
+\begin{gather*}
+    P(A \cap B) = P(A) + P(B) - P(A \cup B),
+\end{gather*}
 
-and for three,
+\noindent and for three,
 
-\begin{enumerate}
-    \item $P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) - P(B \cap C) + P(A \cap B \cap C)$
-    \item $P(A \cap B \cap C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) - P(B \cap C) + P(A \cup B \cup C)$
-\end{enumerate}
+\begin{gather*}
+    P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) \\ - P(B \cap C) + P(A \cap B \cap C).
+\end{gather*}
 
 \noindent \textbf{Conditional Probability} \\
 \indent The probability of event A given that event $B$ has already occurred is written as $P(A|B)$.
@@ -793,27 +1032,7 @@ and for three,
 
 \subsection{Discrete Stochastic Variables}
 
-We say $X$ is a discrete stochastic (random) variable if $X$ is a numerically valued function whose domain is the sample space of a probability experiment with a finite or countably infinite number of outcomes. \par
-Every random variable has a probability distribution associated with it, and there exists a one-to-one mapping between the two. \\
-
-\noindent \textbf{Expectation Value} \\
-\indent If $X$ is a discrete random variable with probability function $p(x_{i})$, then the expectation value (mean) of the random variable $X$ is given by,
-
-\begin{gather*}
-    E[X] = \sum_{i}^{\infty} x_{i}p(x_{i})
-\end{gather*}
-
-\noindent and for an arbitrary function $g(X)$, we call $Y = g(x)$ a transformation of $X$ such that
-
-\begin{gather*}
-    E[Y] = E[g(X)] = \sum_{i}^{\infty} g(x_{i})p(x_{i}).
-\end{gather*}
-
-The expectation value of a linear transform is also linear. For example, take the transformation $Y = aX + b$, the expectation value of $Y$ is then
-
-\begin{gather*}
-   E[Y] = E[aX + b] = a\cdot E[X] + b. 
-\end{gather*}
+We say $X$ is a discrete stochastic (random) variable if $X$ is a numerically valued function whose domain is the sample space of a probability experiment with a finite or countably infinite number of outcomes. Every random variable has a probability distribution associated with it, and there exists a one-to-one mapping between the two. \\
 
 \noindent \textbf{Median}\\
 \indent If $X = \{x_{1},x_{2},...,x_{n}\}$ is a collection of $n$ \textit{sorted} data points then the median of the data is
@@ -826,7 +1045,7 @@ The expectation value of a linear transform is also linear. For example, take th
 \end{gather*}
 
 \noindent \textbf{Midrange} \\
-\indent If $X = \{x_{1},x_{2},...,x_{n}\}$ is a collection of $n$ \textit{sorted} data points then the midrange of the data is
+\indent If $X = \{x_{1},x_{2},...,x_{n}\}$ is a collection of $n$ \textit{sorted} data points then the midrange of the data is the minimal element plus the maximal element divided by two:
 
 \begin{gather*}
     \frac{x_{1} + x_{n}}{2}.
@@ -845,9 +1064,23 @@ The expectation value of a linear transform is also linear. For example, take th
 
 \indent Linear interpolation can be used to find the value of a fractional data point.\\
 
-\noindent \textbf{Variance} \\
+\noindent \textbf{Expectation Value} \\
+\indent If $X$ is a discrete random variable with probability function $p(x_{i})$, then the expectation value (mean) of the random variable $X$ is given by,
+
 \begin{gather*}
-    Var[X] = \sigma_{X}^{2} = \sum_{x_{i}} (x_{i} - \mu_{x})^{2} \cdot p(x_{1}).    
+    E[X] = \sum_{i}^{\infty} x_{i}p(x_{i})
+\end{gather*}
+
+\noindent and for an arbitrary function $g(X)$, we call $Y = g(x)$ a transformation of $X$ such that
+
+\begin{gather*}
+    E[Y] = E[g(X)] = \sum_{i}^{\infty} g(x_{i})p(x_{i}).
+\end{gather*}
+
+\noindent \textbf{Variance} \\
+The variance of a discrete random variable is given by
+\begin{gather*}
+    Var[X] = \sigma_{X}^{2} = \sum_{x_{i}} (x_{i} - \mu_{X})^{2} \cdot p(x_{i}),
 \end{gather*}
 
 or
@@ -860,7 +1093,7 @@ or
 \noindent \textbf{Mean and Variance of a Linear Transformation} \\
 \indent Let $X$ be a discrete random variable and let $Y = a\cdot X + b$, where $a,b \in \mathbb{R}$. Then,
 \begin{itemize}
-    \item[1.] \quad $E[Y] = E[a\cdot X + b] = a\cdot E[x] + b$.
+    \item[1.] \quad $E[Y] = E[a\cdot X + b] = a\cdot E[X] + b$.
     \item[2.] \quad $Var[Y] = Var[a\cdot X + b] = a^2 \cdot Var[X]$. 
 \end{itemize}
 
@@ -868,19 +1101,21 @@ or
 Let $X$ be a discrete random variable. The \textit{standard deviation} of $X$ is given by,
 
 \begin{gather*}
-    \sigma_{X} = \sqrt{Var[X]} = \sqrt{\sum_{x_{i}} x_{i}^{2} p(x_{i}) - \mu_{x}^{2}} = \sqrt{E[X^2] - (E[X])^2}.
+    \sigma_{X} = \sqrt{Var[X]} = \sqrt{\sum_{x_{i}} x_{i}^{2} p(x_{i}) - \mu_{X}^{2}} = \sqrt{E[X^2] - (E[X])^2}.
 \end{gather*}
 
 \noindent \textbf{Standardized Random Variable} \\
-\indent Let $X$ be a discrete random variable and let $Z = \frac{X - \mu}{\sigma}$. Then $Z$ is called the \textbf{standardization of $X$}. The random variable $Z$ always has mean equal to 0 and standard deviation equal to 1.
+\indent Let $X$ be a discrete random variable and let $Z = \frac{X - \mu}{\sigma}$. Then $Z$ is called the \textbf{standardization of $X$}. The random variable $Z$ always has a mean equal to 0 and a standard deviation equal to 1.
 \\
 
 \noindent \textbf{Z-score} \\
-\indent Let $x$ be a value form a probability distribution with mean $\mu$ and standard deviation $\sigma$. Then the \textbf{z-score} for $x$ is defined to be:
+\indent Let $x$ be a value from a probability distribution with mean $\mu$ and standard deviation $\sigma$. Then the \textbf{z-score} for $x$ is defined to be:
 
 \begin{gather*}
-    z = \frac{x - \mu}{\sigma}
+    z = \frac{x - \mu}{\sigma}.
 \end{gather*}
+
+The z-score can be interpreted as a measure for the number of standard deviations away from the mean a data point lies.\\
 
 \noindent \textbf{Markov Inequality} \\
 \indent Let $Y$ be a discrete random variable taking only non-negative values, with finite mean $\mu_{Y}$. Then $\forall a > 0$,
@@ -893,18 +1128,18 @@ Let $X$ be a discrete random variable. The \textit{standard deviation} of $X$ is
 Let $X$ be a discrete random variable with finite mean $\mu_{X}$ and standard deviation $\sigma_{X}$. Let $k$ be greater than 1. Then the probability that $X$ is more than $k$ standard deviations from the mean, $\mu_{X}$, is less than or equal to $1/k^2$. That is,
 
 \begin{gather*}
-    \text{Pr}(X < \mu_{X} - k\cdot \sigma_{X} \ \ \text{or} \ \ X > \mu_{X} + k\cdot \sigma_{X}) =  \text{Pr}(\lvert X - \mu \rvert > k \cdot \sigma_{X}) \leq \frac{1}{k^2}.
+    \text{Pr}(X < \mu_{X} - k \sigma_{X} \ \ \text{or} \ \ X > \mu_{X} + k\sigma_{X}) =  \text{Pr}(\lvert X - \mu \rvert > k\sigma_{X}) \leq \frac{1}{k^2}.
 \end{gather*}
 \noindent Equivalently,
 \begin{gather*}
-    \text{Pr}(\mu_{X} - k\sigma_{X} \leq X \leq \mu_{X} + k\sigma_{X}) = \text{Pr}(\lvert X - \mu \rvert \leq k \cdot \sigma_{X}) \geq 1 - \frac{1}{k^2}.
+    \text{Pr}(\mu_{X} - k\sigma_{X} \leq X \leq \mu_{X} + k\sigma_{X}) = \text{Pr}(\lvert X - \mu \rvert \leq k \sigma_{X}) \geq 1 - \frac{1}{k^2}.
 \end{gather*}
 
 \noindent \textbf{Outliers} \\
-\indent We define an outlier to be any data point with a $z$-score less than $z = -3$ or greater than $z = 3$, i.e. more than 3 standard deviations away from the mean.\\
+\indent We define an outlier to be any data point with an absolute $z$-score greater than 3 standard deviations away from the mean, i.e. $\lvert z \rvert > 3$.\\
 
 \noindent \textbf{Coefficient of Variation} \\
-\indent A random variable $X$ with mean $\mu$ and standard deviation $\sigma$ has a coefficient of variation
+\indent The coefficient of variation is a statistic that measures the relative variability of a random variable -- the ratio of the standard deviation to the mean. A random variable $X$ with mean $\mu$ and standard deviation $\sigma$ has a coefficient of variation
 
 \begin{gather*}
     \frac{100 \cdot \sigma}{\mu}\%
@@ -922,20 +1157,31 @@ Let $X$ be a discrete random variable with finite mean $\mu_{X}$ and standard de
     p(x,y) = \text{Pr}[\{X = x\} \cap \{Y = y\}] = \text{Pr}[X=x]\cdot \text{Pr}[Y=y] = p_{X}(x) \cdot p_{Y}(y)
 \end{gather*}
 
-For independence, let $X$ and $Y$ be random variables arising from the same probability experiment. Then,
+Let $X$ and $Y$ be random variables arising from the same probability experiment. Then,
 
 \begin{gather*}
-    E[X + Y] = E[X] + E[Y]. \text{This extends to sums of any length}.
+    E[X + Y] = E[X] + E[Y]. 
 \end{gather*}
 
-\noindent Further, if $X$ and $Y$ are independent, then
+\noindent This extends to sums of any length. Further, if $X$ and $Y$ are independent, then
 
 \begin{gather*}
     E[X\cdot Y] = E[X] \cdot E[Y], \\
     Var[X + Y] = Var[X] + Var[Y].
 \end{gather*}
 
-\noindent The last equation extends to finite sums of any length provided the summands are pairwise independent.
+\noindent This last equation extends to finite sums of any length provided the summands are all pairwise independent.\\
+
+\noindent \textbf{Probability Generating Function} \\
+\indent Let $X$ be a random variable taking non-negative integer values. Let $p_{n} = \text{Pr}[X=n]$. Then the probability generating function for $X$ is defined by,
+\begin{gather*}
+    h(s) = \sum_{i=0}^{\infty} p_{i}s^{i} = E[s^{X}].
+\end{gather*}
+From this function we can derive the expectation value and the variance of the distribution to be
+\begin{gather*}
+    E[X] = h'(1), \\
+    Var[X] = h''(1) + h'(1) - (h'(1))^{2}.
+\end{gather*}
 
 \subsection{Discrete Distributions}
 \noindent \textbf{Finite Summation Formulas} \\
@@ -958,7 +1204,7 @@ For independence, let $X$ and $Y$ be random variables arising from the same prob
 \end{gather*}
 
 \noindent \textbf{Bernoulli Random Variable}\\
-\indent A \textbf{Bernoulli trial} is an experiment that has two outcomes, 1 or 0. Thus Pr$[X=1] = p$ and Pr$[X = 0] = q = 1 - p$. The mean and variance are given by
+\indent A Bernoulli trial is an experiment that has two outcomes, 1 or 0. Thus Pr$[X=1] = p$ and Pr$[X = 0] = q = 1 - p$. The mean and variance are given by
 \begin{gather*}
     E[X] = p\\
     Var[X] = pq = p(1-p)
@@ -970,10 +1216,10 @@ For independence, let $X$ and $Y$ be random variables arising from the same prob
     \text{Pr}(Y=y) = p(y) = {n \choose y}p^{y}q^{n-y} \quad \text{for}\ y=0,1,2,...,n\ \text{and}\ 0 \leq p \leq 1.
 \end{gather*}
 
-\noindent The mean and variance are with probability of success $p$ and $n$ trails is then
+\noindent With probability of success $p$ and $n$ trails is then the mean and variance are:
 \begin{gather*}
     \mu_{Y} = E[Y] = np,\\
-    \sigma_{Y}^{2} = Var[Y] = npq = np(1-p)
+    \sigma_{Y}^{2} = Var[Y] = np(1-p) = npq.
 \end{gather*}
 
 \noindent \textbf{Geometric Distribution} \\
@@ -985,15 +1231,15 @@ For independence, let $X$ and $Y$ be random variables arising from the same prob
 \noindent The mean and variance are given by
 \begin{gather*}
     E[X] = \frac{q}{p}, \\
-    Var[X] = \frac{p}{q^2}.
+    Var[X] = \frac{q}{p^2}.
 \end{gather*}
 
 \noindent \textbf{Negative Binomial Distribution} \\
 \indent The negative binomial distribution is a generalization of the geometric distribution. The requirements for a negative binomial process are:
 \begin{itemize}
     \item[(i)] The trials are identical.
-    \item[(ii)] Each trial is independent of the other trials.
-    \item[(iii)] The random variable $M$ denotes the numver of failures prior to the $r^{th}$ success.
+    \item[(ii)] Each trial is independent of any other trial.
+    \item[(iii)] The random variable $M$ denotes the number of failures prior to the $r^{th}$ success.
     \item[(iv)]  The probability of success is $p$ and the probability of failure is $q$.
 \end{itemize}
 
@@ -1020,6 +1266,213 @@ For independence, let $X$ and $Y$ be random variables arising from the same prob
     Var[X] = n\left ( \frac{B}{B+G}\right ) \left ( \frac{G}{B+G}\right ) \left ( \frac{B+G-n}{B+G-1}\right ).
 \end{gather*}
 
+\noindent \textbf{Poisson Distribution} \\
+\indent The Poisson distribution with the random variable $Z$ has the probability function given by
+\begin{gather*}
+    \text{Pr}(Z=k) = e^{-\lambda} \frac{\lambda^{k}}{k!} \quad \text{for}\ \lambda > 0.
+\end{gather*}
+\noindent with mean and variance given by
+\begin{gather*}
+    E[Z] = Var[Z] = \lambda
+\end{gather*}
+
+Moreover, the sum of two independent Poisson random variables is another Poisson random variable. Suppose that $Z_{i}$ are independent Poisson random variables with mean $\lambda_{i}$ for $i = 1,2$. Then $Z = Z_{1} + Z_{2}$ is a Poisson random variable with mean $E[Z] = E[Z_{1} + Z_{2}] = \lambda_{1} + \lambda_{2}$.\par
+The mode of a Poisson distribution is 
+\begin{itemize}
+    \item[(i)] If $\lambda \in \mathbb{N}$, then the mode is bimodal with $\lambda$ and $\lambda - 1$.
+    \item[(ii)] Otherwise, the mode is $\floor*{\lambda}$.
+\end{itemize}
+
+\subsection{CDFs and PDFs}
+\subsubsection{Cumulative Distribution Function}
+The cumulative distribution function (CDF) of a random variable $X$ is defined by,
+\begin{gather*}
+    F_{X}(x) = Pr(-\infty,x] = Pr[-\infty < X \leq x]
+\end{gather*}
+The properties of all cumulative distribution functions are
+\begin{itemize}
+    \item[(i)] $F_{X}(x)$ is a non-decreasing function.
+    \item[(ii)] $\lim\limits_{x\to-\infty} F_{X}(x) = 0$.
+    \item[(iii)] $\lim\limits_{x\to\infty} F_{X}(x) = 1$.
+    \item[(iv)] Pr$(a < X \leq b) = F_{X}(b) - F_{X}(a)$.
+\end{itemize}
+
+\subsubsection{Density Function}
+If $X$ is a random variable with a differentiable cumulative distribution function $F_{X}(x)$, then the probability density function for $X$ is given by:
+\begin{gather*}
+    f_{X}(x) = F_{X}'(x).
+\end{gather*}
+The CDF can be calculated from the probability density function:
+\begin{gather*}
+    F_{X}(x) = \int_{-\infty}^{x}f_{X}(t)dt.
+\end{gather*}
+Some properties of the probability density function are,
+\begin{itemize}
+    \item[(i)] $f_{X}(x) \geq 0$.
+    \item[(ii)] $\int_{-\infty}^{\infty} f_{X}(x)dx = 1$.
+    \item[(iii)] Pr$[a \leq X \leq b] = \int_{a}^{b}f_{X}(x)dx$.
+\end{itemize}
+
+To calculate the expected value of a random variable using the CDF, let $X$ be a non-negative random variable living on the interval $(A,B)$. Then
+\begin{gather}
+    E[X] = A + \int_{A}^{B}(1 - F(x))dx.
+\end{gather}
+
+\subsection{Mixed Distributions}
+If a probability experiment involves random variables that are partly continuous and partly discrete, then we call the distribution a \textbf{mixed distribution}. For example, consider a spinning wheel in which is painted 25\text{\%} green which returns the value 1, and the remaining sector is labeled continuously from 0 to 1. Then the outcome $X$ is a continuous random variable $75\%$ of the time, and discrete $25\%$ of the time. \par
+Let $Y$ and $Z$ be any two given random variables with CDFs $F_{Y}$ and $F_{Z}$, respectively, and let $p$ be a given number such that  $0 < p < 1$. For any real number $x$ define,
+\begin{gather}
+    F_{X}(x) = pF_{Y}(x) + (1-p)F_{Z}(x).
+\end{gather}
+The resulting random variable $X$ is called a \textbf{two-point mixture} of $Y$ and $Z$ with mixing weights $p$ and $1-p$.\par
+For a two-point mixture $X$ of $Y$ and $Z$ with mixing weights $p$ and $1-p$, then
+\begin{gather}
+    E[X^n] = pE[Y^n] + (1-p)E[Z^n].
+\end{gather}
+
+\subsubsection{Deductibles and Caps}
+A \textbf{deductible} is a minimum amount that a customer must exceed in order to receive reimbursement from their insurance company. For example, if one had a dental insurance plan with a deductible of $\$200$ and one's dental bill costed $\$350$, then one would pay $\$150$ for the bill, and the insurance company would cover the remaining $\$200$. We denote \textit{actual loss amount random variable} $X$ to be how much the customer has to cover, and the \textit{payment random variable} $Y$ reflect how much the insurance company covers. For a deductible of value $d$, $X$ and $Y$ have the following relationship
+\begin{gather}
+    Y = \begin{cases}
+            0 & \text{if}\ \ A \leq X < d\\
+            X - d & \text{if}\ \  d \leq X < B.
+        \end{cases}
+\end{gather}
+Given the probability density $f_{X}(x)$ for how much the customer pays, the expected value that an insurance company has to be pay is
+\begin{gather}
+    E[Y] = \int_{A}^{d}0\cdot f_{X}(x)dx + \int_{d}^{B}(x-d)f_{X}(x)dx = \int_{d}^{B}(x-d)f_{X}(x)dx.
+\end{gather}
+A \textbf{cap} is a minimum value to which the insurance company will cover. The customer is required to pay the difference for any amount that exceeds the cap. The relationship between $X$ and $Y$ is then
+\begin{gather}
+    Y = \begin{cases}
+            X & \text{if}\ \ A \leq X < C\\
+            C & \text{if}\ \ C \leq X < B.
+        \end{cases}
+\end{gather}
+The expected value the insurance company has to cover in this scenario is then
+\begin{gather}
+    E[Y] = \int_{A}^{C}xf_{X}(x)dx + C\int_{C}^{B}f_{X}(x)dx.
+\end{gather}
+
+\noindent \textbf{The CDF Method for Deductibles and Caps}\\
+\indent Let $X$ be a continuous loss random variable with domain $(A,B); 0 \leq A < B$, and let $C$ be any number such taht $A < C < B$.
+\begin{itemize}
+    \item[(i)] Benefit capped at $c$: \\
+        \begin{gather}
+        Y^{c} = \begin{cases}
+                    X & \text{if}\ \ A \leq X < c\\
+                    c & \text{if}\ \ c \leq X < B.
+                \end{cases}
+        \end{gather}
+    \item[(ii)] Benefit with deductible of $d$\\
+        \begin{gather}
+            Y_{d} = \begin{cases}
+                        0 & \text{if}\ \ A \leq X < d\\
+                        X - d & \text{if} \ \ d \leq X < B\\
+                    \end{cases}
+        \end{gather}
+    \item[(iii)] Benefit capped at $c$ with deductible $d$\\
+        \begin{gather}
+            Y_{d}^{c} = \begin{cases}
+                            0 & \text{if}\ \ A \leq X < d\\
+                            X - d & \text{if}\ \ d \leq X < c\\
+                            c - d & \text{if}\ \ c \leq X < B.
+                        \end{cases}
+        \end{gather}
+\end{itemize}
+\begin{itemize}
+    \item[(i)] $X = Y^{c} + Y_{d}$.
+    \item[(ii)] $E[Y^{c}] = A \int_{A}^{c}(1 - F_{X}(x))dx$.
+    \item[(iii)] $E[Y_{d}] = \int_{d}^{B}(1 - F_{X}(x))dx$.
+    \item[(iv)] $Y_{d}^{c} = Y^{u} - Y^{d}$.
+    \item[(v)] $E[Y_{d}^{c}] = \int_{d}^{c}(1 - F_{X}(x))dx$.
+\end{itemize}
+
+\subsubsection{Moment Generating Function}
+Let $X$ be any random variable. The \textbf{moment generating function} (MGF) of $X$ is denoted by $M_{X}(t)$ and is defined by,
+\begin{gather}
+    M_{X}(t) = E_{X}[e^{tX}].
+\end{gather}
+
+Some properties of the moment generating function are:
+\begin{itemize}
+    \item[(i)] \textbf{Moments}: $M_{X}^{(k)}(0) = E[X^k]$.
+    \item[(ii)] \textbf{Linear Transformation}: If $Y = aX + b$, then $M_{Y}(t) = e^{bt}M_{X}(at)$.
+    \item[(iii)] \textbf{Sums of Independent Random Variables}: If $X_{1},...,X_{n}$ are independent random variables and $S = X-{1} + ...+ X_{n}$, then
+        \begin{gather}
+            M_{S}(t) = M_{X_{1}}(t) \cdot M_{X_{2}}(t)\cdot\cdot\cdot M_{X{n}}(t).
+        \end{gather}
+    \item[(iv)] \textbf{Corollary to (iii)}: If $X_{1},...,X_{n}$ are independent random variables, all with common distribution $X$, then $M_{S}(t) = [M_{X}(t)]^n$.
+\end{itemize}
+
+Let $X$ be a random variable with $MGF$ $M_{X}(t)$. Define $h(t) = \ln(M_{X}(t))$, then
+\begin{gather}
+    E[X] = h'(0) \quad \quad \text{and} \quad \quad Var[X] = h''(0).
+\end{gather}
+
+\subsubsection{MGF for Some Discrete Distributions}
+\noindent \textbf{MGF of a Binomial}\\
+Let $S$ be a binomial random variable with $n$ trials and probability of success $p$. Then
+\begin{gather}
+    M_{S}(t) = (q + pe^t)^n.
+\end{gather}
+
+\noindent \textbf{MGF of a Geometric Random Variable}\\
+Let $X$ be the number of failures before the first success in a sequence of independent identical Bernoulli trials with probability of success $p$. Then $X$ is a geometric distribution with MGF giben by,
+\begin{gather}
+    M_{X}(t) = \frac{p}{1 - qe^t}.
+\end{gather}
+
+\noindent \textbf{MGF for the Ngeatvie Binomial Variable}\\
+Let $S$ be the number of failures before the $r^{th}$ success in a sequence of independent identical Bernoulli trials with probability of success $p$. Then $S$ is a negative binomial distribution with MGF given by,
+\begin{gather}
+    M_{S}(t) = \left( \frac{p}{1-qe^t} \right)^r.
+\end{gather}
+
+\noindent \textbf{MGF for the Poisson Distribution}\\
+If $X$ is Poisson with parameter $\lambda$, then the MGF for $X$ is given by,
+\begin{gather}
+    M_{X}(t) = e^{\lambda(e^t - 1)}.
+\end{gather}
+
+\subsection{Continuous Distributions}
+\subsubsection{Uniform Distribution}
+The \textbf{standard uniform} distribution, denoted by $U$, is given by a constant probability density function on the interval $0$ to $1$.
+\begin{gather}
+    f(u) = \begin{cases}
+                1 & 0 \leq u \leq 1\\
+                0 & \text{otherwise}.
+            \end{cases}
+\end{gather}
+The CDF is given by
+\begin{gather}
+    F(u) = \begin{cases}
+                0 & -\infty < u < 0\\
+                u & 0 \leq u \leq 1\\
+                1 & 1 < u < \infty.
+           \end{cases}
+\end{gather}
+Given the standard uniform distribution, we can define the \textbf{general uniform} distribution as follows.
+\begin{gather}
+    X = A + (B-A)U.
+\end{gather}
+The PDF is
+\begin{gather}
+    f_{X}(x) = \frac{1}{B-A} \quad \quad A \leq x \leq B.
+\end{gather}
+The CDF is
+\begin{gather} 
+    F_{X}(x) = \frac{x-A}{B-A} \quad \quad A \leq x \leq B.
+\end{gather}
+The mean and variance are given by
+\begin{gather}
+    E[X] = \frac{A+B}{2} \quad \quad Var[X] = \frac{(B-A)^2}{12}.
+\end{gather}
+If $A \leq a \leq b \leq B$, then 
+\begin{gather}
+    P[a \leq X \leq b] = \frac{b-a}{B-A}.
+\end{gather}
+
 \subsection{Moments}
 The $n$th moment of $X$ for a discrete variable is defined as:
 
@@ -1027,13 +1480,13 @@ The $n$th moment of $X$ for a discrete variable is defined as:
     \braket{x^n} = \sum_{i=1}^{j}x^{n}P(x_{i})
 \end{gather*}
 
-\noindent where the first moment is just the average over the sample space, and the second moment is the variance of $X$. More generally, we can write
+\noindent where the first moment is just the average over the sample space, and the second moment minus the first moment squared is the variance of $X$. More generally, we can write
 
 \begin{gather*}
     \braket{f(x)} = \sum_{i=0}^{\infty} f(x) P(x_{i})
 \end{gather*}
 
-\indent For a continous variable, the sums turn into integrals to cover the entire sample space. The $n$th moment of $X$ is then defined as
+\indent For a continuous variable, the sums turn into integrals to cover the entire sample space. The $n$th moment of $X$ is then defined as
 
 \begin{gather*}
     \braket{x^n} = \int_{-\infty}^{\infty} x^n P(x) dx
